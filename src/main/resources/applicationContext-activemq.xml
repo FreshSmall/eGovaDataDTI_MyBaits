@@ -82,8 +82,8 @@
         <!--消息接收超时 -->
         <property name="receiveTimeout" value="10000" />
         <!-- 接收者ID -->
-        <property name="clientId" value="clientId_001" />
-        <property name="durableSubscriptionName" value="clientId_001" />
+       <!-- <property name="clientId" value="clientId_001" />
+        <property name="durableSubscriptionName" value="clientId_001" />-->
     </bean>
 
 </beans>
