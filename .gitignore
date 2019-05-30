@@ -34,7 +34,7 @@ base/cn/com/egova/base/constant/SchemaConst.java
 *.sql
 *.fnc
 *.pyc
-*.properties
+#*.properties
 out/
 rebel-remote.xml
 rebel.xml

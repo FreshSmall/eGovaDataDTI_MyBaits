@@ -39,7 +39,7 @@
     <bean id="demoQueueDestination" class="org.apache.activemq.command.ActiveMQQueue">
         <!-- 设置消息队列的名字 -->
         <constructor-arg>
-            <value>slimsmart.topic.test</value>
+            <value>slimsmart.topic.test.ceshi</value>
         </constructor-arg>
     </bean>
 
