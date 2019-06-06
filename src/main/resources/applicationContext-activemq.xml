@@ -26,8 +26,8 @@
 
     <bean id="activeMqConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
         <property name="brokerURL" value="tcp://localhost:61616"/>
-        <property name="userName" value="admin"></property>
-        <property name="password" value="admin"></property>
+        <property name="userName" value="guest"></property>
+        <property name="password" value="guest"></property>
     </bean>
     <!-- 配置JMS连接工长 -->
     <bean id="connectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory">
@@ -39,7 +39,7 @@
     <bean id="demoQueueDestination" class="org.apache.activemq.command.ActiveMQQueue">
         <!-- 设置消息队列的名字 -->
         <constructor-arg>
-            <value>slimsmart.topic.test.ceshi</value>
+            <value>slimsmart.topic.test</value>
         </constructor-arg>
     </bean>
 
@@ -75,15 +75,6 @@
         <property name="connectionFactory" ref="connectionFactory" />
         <property name="destination" ref="topicDestination" />
         <property name="messageListener" ref="queueMessageListener" />
-        <!-- 发布订阅模式 -->
-        <property name="pubSubDomain" value="true" />
-        <!-- 消息持久化值设置为true -->
-        <property name="subscriptionDurable" value="true" />
-        <!--消息接收超时 -->
-        <property name="receiveTimeout" value="10000" />
-        <!-- 接收者ID -->
-       <!-- <property name="clientId" value="clientId_001" />
-        <property name="durableSubscriptionName" value="clientId_001" />-->
     </bean>
 
 </beans>
