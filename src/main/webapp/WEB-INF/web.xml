@@ -14,6 +14,11 @@
     <param-value>expdti.root</param-value>
   </context-param>
 
+  <context-param>
+    <param-name>log4jRefreshInterval</param-name>
+    <param-value>3000</param-value>
+  </context-param>
+
   <!-- Spring 配置文件位置 -->
   <context-param>
     <param-name>contextConfigLocation</param-name>

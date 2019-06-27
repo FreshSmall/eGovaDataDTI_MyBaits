@@ -3,8 +3,13 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-       http://www.springframework.org/schema/beans/spring-beans.xsd">
-    <context:property-placeholder location="classpath*:kafka.properties"/>
+                            http://www.springframework.org/schema/beans/spring-beans.xsd
+                            http://www.springframework.org/schema/context
+    					    http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+
+
+    <context:property-placeholder location="classpath:kafka.properties"/>
     <!-- 1.定义producer的参数 -->
     <bean id="producerProperties" class="java.util.HashMap">
         <constructor-arg>
@@ -70,14 +75,14 @@
     <bean id="kafkaConsumerService" class="cn.com.egova.kafka.KafkaConsumerSerivceImpl"/>
 
     <!-- 4.消费者容器配置信息 -->
-    <bean id="containerProperties" class="org.springframework.kafka.listener.ContainerProperties">
+    <bean id="containerProperties" class="org.springframework.kafka.listener.config.ContainerProperties">
         <!-- topic -->
-        <constructor-arg name="topics">
-            <list>
+        <constructor-arg value="my-replicated-topic">
+           <!-- <list>
                 <value>${kafka.task.eval.topic}</value>
                 <value>${kafka.task.optimizeNetwork.topic}</value>
                 <value>${kafka.task.business.topic}</value>
-            </list>
+            </list>-->
         </constructor-arg>
         <property name="messageListener" ref="kafkaConsumerService"/>
     </bean>
@@ -86,6 +91,6 @@
           init-method="doStart">
         <constructor-arg ref="consumerFactory"/>
         <constructor-arg ref="containerProperties"/>
-        <property name="concurrency" value="${kafka.consumer.concurrency}"/>
+        <!--<property name="concurrency" value="${kafka.consumer.concurrency}"/>-->
     </bean>
 </beans>

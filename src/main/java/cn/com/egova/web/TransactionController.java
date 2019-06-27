@@ -1,6 +1,8 @@
 package cn.com.egova.web;
 
 import cn.com.egova.batch.AsyncInfoManager;
+import cn.com.egova.batch.SpringBatchManager;
+import cn.com.egova.batch.SyncHandler;
 import cn.com.egova.bean.ResultInfo;
 import cn.com.egova.kafka.KafkaProducerService;
 import cn.com.egova.mq.JmsProducerService;
@@ -25,6 +27,12 @@ public class TransactionController {
 
     @Autowired
     JmsProducerService jmsProducerService;
+
+    @Autowired
+    SpringBatchManager springBatchManager;
+
+    @Autowired
+    SyncHandler syncHandler;
 
     @Autowired
     KafkaProducerService kafkaproducerService;
@@ -65,9 +73,9 @@ public class TransactionController {
         return result;
     }
 
-    @RequestMapping(value = "/send/activeMQ", method = RequestMethod.POST)
+    @RequestMapping(value = "/sendMessage", method = RequestMethod.POST)
     @ResponseBody
-    public ResultInfo sendActiveMQMessage(@RequestParam String param) {
+    public ResultInfo sendProducer(@RequestParam String param) {
         ResultInfo result = new ResultInfo(true);
         jmsProducerService.send("slimsmart.topic.test", param);
         return result;
@@ -88,10 +96,25 @@ public class TransactionController {
 
     @RequestMapping(value = "/send/kafka",method = RequestMethod.POST)
     @ResponseBody
-    public ResultInfo sendKafkaMessage(){
+    public ResultInfo sendKafkaMessage(@RequestParam String topicName,@RequestParam String param){
         ResultInfo result = new ResultInfo(true);
-        result = kafkaproducerService.sendKafkaMessage("my-topic-replicated","");
+        result = kafkaproducerService.sendKafkaMessage(topicName,param);
         return result;
     }
 
+    @RequestMapping(value = "/sendBatch", method = RequestMethod.GET)
+    @ResponseBody
+    public ResultInfo sendBatchInfo() throws Exception{
+        ResultInfo result = new ResultInfo(true);
+        springBatchManager.sendBatchInfo();
+        return result;
+    }
+
+    @RequestMapping(value = "/sendSyncHandler", method = RequestMethod.GET)
+    @ResponseBody
+    public ResultInfo sendSyncHandler(){
+        ResultInfo result = new ResultInfo(true);
+        result.setMessage(syncHandler.syncInfo());
+        return result;
+    }
 }
