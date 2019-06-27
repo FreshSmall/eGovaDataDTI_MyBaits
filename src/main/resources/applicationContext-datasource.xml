@@ -21,6 +21,10 @@
     </context:component-scan>
 
 
+    <!-- 任务及线程池 -->
+    <task:annotation-driven executor="asyncExecutor" />
+    <task:executor id="asyncExecutor" pool-size="100-10000" queue-capacity="10"/>
+
     <!-- 载入属性文件 -->
     <context:property-placeholder location="classpath:*.properties" file-encoding="utf-8"/>
 

@@ -5,22 +5,22 @@ import cn.com.egova.service.StatInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 @Service
 public class StatInfoServiceImpl implements StatInfoService {
 
 	@Autowired
 	private StatInfoMapper statInfoMapper;
 
+
 	@Override
 	public void updateParam(String param, int recID) {
 		statInfoMapper.updateParam(param, recID);
-//		int a = 1 / 0;
 	}
 
 	@Override
 	public void updateParam1(String param, int recID) {
 		statInfoMapper.updateParam(param+"测试1",recID);
-		int a = 1/0;
 	}
 
 	@Override

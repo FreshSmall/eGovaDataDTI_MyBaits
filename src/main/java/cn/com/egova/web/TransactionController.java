@@ -1,6 +1,8 @@
 package cn.com.egova.web;
 
+import cn.com.egova.batch.AsyncInfoManager;
 import cn.com.egova.bean.ResultInfo;
+import cn.com.egova.kafka.KafkaProducerService;
 import cn.com.egova.mq.JmsProducerService;
 import cn.com.egova.service.StatInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "api/test")
@@ -20,6 +25,12 @@ public class TransactionController {
 
     @Autowired
     JmsProducerService jmsProducerService;
+
+    @Autowired
+    KafkaProducerService kafkaproducerService;
+
+    @Autowired
+    AsyncInfoManager asyncInfoManager;
 
     @RequestMapping(value = "/transaction/hand", method = RequestMethod.POST)
     @ResponseBody
@@ -54,13 +65,33 @@ public class TransactionController {
         return result;
     }
 
-    @RequestMapping(value = "/sendMessage", method = RequestMethod.POST)
+    @RequestMapping(value = "/send/activeMQ", method = RequestMethod.POST)
     @ResponseBody
-    public ResultInfo sendProducer(@RequestParam String param) {
+    public ResultInfo sendActiveMQMessage(@RequestParam String param) {
         ResultInfo result = new ResultInfo(true);
         jmsProducerService.send("slimsmart.topic.test", param);
         return result;
     }
 
+    @RequestMapping(value = "/asyncHandle", method = RequestMethod.GET)
+    @ResponseBody
+    public ResultInfo asyncHandle(@RequestParam int count) {
+        ResultInfo result = new ResultInfo(true);
+        System.out.println("线程名称："+Thread.currentThread().getName());
+        List<String> list = new ArrayList<String>(count);
+        for (int i = 0; i < count; i++) {
+            list.add(asyncInfoManager.syncInfo());
+        }
+        result.addData("list",list);
+        return result;
+    }
+
+    @RequestMapping(value = "/send/kafka",method = RequestMethod.POST)
+    @ResponseBody
+    public ResultInfo sendKafkaMessage(){
+        ResultInfo result = new ResultInfo(true);
+        result = kafkaproducerService.sendKafkaMessage("my-topic-replicated","");
+        return result;
+    }
 
 }
