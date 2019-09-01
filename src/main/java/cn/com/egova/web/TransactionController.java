@@ -8,12 +8,14 @@ import cn.com.egova.kafka.KafkaProducerService;
 import cn.com.egova.mq.JmsProducerService;
 import cn.com.egova.service.StatInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +41,9 @@ public class TransactionController {
 
     @Autowired
     AsyncInfoManager asyncInfoManager;
+
+    @Autowired
+    JdbcTemplate jdbcTemplate;
 
     @RequestMapping(value = "/transaction/hand", method = RequestMethod.POST)
     @ResponseBody
@@ -115,6 +120,15 @@ public class TransactionController {
     public ResultInfo sendSyncHandler(){
         ResultInfo result = new ResultInfo(true);
         result.setMessage(syncHandler.syncInfo());
+        return result;
+    }
+
+
+    @RequestMapping(value = "/getConnects", method = RequestMethod.GET)
+    @ResponseBody
+    public ResultInfo getConnections() throws SQLException {
+        ResultInfo result = new ResultInfo(true);
+        result.setMessage(""+jdbcTemplate.getDataSource().getConnection().getMetaData().getMaxConnections());
         return result;
     }
 }

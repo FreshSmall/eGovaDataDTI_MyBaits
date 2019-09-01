@@ -199,7 +199,8 @@ public class DAORowMapper<T> implements RowMapper<T> {
                 } catch (Exception e) {
                 }
                 //找到和当前字段名称一致的对象属性设置方法，然后赋值
-                String name = wapping.getColumnName(columnIndex);
+//                String name = wapping.getColumnName(columnIndex);
+                String name = wapping.getColumnLabel(columnIndex);
                 for (Method method : methods) {
                     //通过方法名以及参数类型来过滤掉不匹配的方法，过滤之后剩下的就是对应的 setter
                     String methodName = method.getName();

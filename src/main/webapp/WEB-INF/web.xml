@@ -31,14 +31,14 @@
     <param-value>/WEB-INF/classes/log4j.properties</param-value>
   </context-param>
 
-  <!-- spring contextConfigLocation 监听配置装载 -->
-  <listener>
-    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-  </listener>
-
   <!-- Spring Log4J 监听配置装载 -->
   <listener>
     <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+  </listener>
+
+  <!-- spring contextConfigLocation 监听配置装载 -->
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
 
   <!-- 中文编码处理(Post) -->
