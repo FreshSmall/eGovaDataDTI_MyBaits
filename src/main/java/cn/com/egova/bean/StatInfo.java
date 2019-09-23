@@ -1,7 +1,10 @@
 package cn.com.egova.bean;
 
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.Date;
 
+@Table(name = "to_stat_info")
 public class StatInfo extends StatInfoKey {
     private String taskNum;
 
@@ -443,36 +446,41 @@ public class StatInfo extends StatInfoKey {
 
     private Integer wrongDispatchNum;
 
+    @Transient
     private Integer callNums;
-
+    @Transient
     private Integer connectCallNums;
-
+    @Transient
     private Integer signNum;
-
+    @Transient
     private Integer intimeSignNum;
 
     private String idCardNo;
 
+    @Transient
     private Integer commonRecTypeFlag;
-
+    @Transient
     private Integer commonRecAttrFlag;
 
+    @Transient
     private Integer centerTownFlag;
 
+    @Transient
     private Integer hzRoadTypeId;
 
+    @Transient
     private Integer specTypeId;
-
+    @Transient
     private Integer statAppendFlag;
-
+    @Transient
     private Integer archiveHumanRoleId;
-
+    @Transient
     private Integer dispatchHumanRoleId;
-
+    @Transient
     private Integer secondDispatchHumanRoleId;
-
+    @Transient
     private Integer superviseHumanRoleId;
-
+    @Transient
     private String thirdUnitName;
 
     public String getTaskNum() {

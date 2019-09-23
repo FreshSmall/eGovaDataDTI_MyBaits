@@ -65,8 +65,6 @@ public class HttpDemo {
 		String url = "https://localhost:8443/";
 		HttpGet httpGet = new HttpGet(url);
 
-//		ConnectionSocketFactory plainsf = <...>
-//		LayeredConnectionSocketFactory sslsf1 = new SSLConnectionSocketFactory();
 		Registry<ConnectionSocketFactory> r = RegistryBuilder.<ConnectionSocketFactory>create()
 				.register("http", PlainConnectionSocketFactory.INSTANCE)
 				.register("https", new SSLConnectionSocketFactory(createIgnoreVerifySSL(),NoopHostnameVerifier.INSTANCE))

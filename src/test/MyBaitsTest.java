@@ -1,10 +1,9 @@
-import cn.com.egova.bean.PatrolInfo;
-import cn.com.egova.bean.PatrolInfoList;
-import cn.com.egova.bean.StatInfoKey;
-import cn.com.egova.bean.StatInfoWithBLOBs;
+import cn.com.egova.bean.*;
 import cn.com.egova.dao.StatInfoMapper;
+import cn.com.egova.dao.TkStatInfoMapper;
 import cn.com.egova.service.StatInfoService;
 import cn.com.egova.util.DAORowMapper;
+import cn.com.egova.util.PropertiesUtils;
 import com.google.gson.*;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -30,6 +29,9 @@ public class MyBaitsTest extends BaseJunit4Test {
 
 	@Autowired
 	private StatInfoMapper statInfoMapper;
+
+	@Autowired
+    private TkStatInfoMapper tkStatInfoMapper;
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
@@ -99,7 +101,7 @@ public class MyBaitsTest extends BaseJunit4Test {
 	public void test1() {
 		int[] typeIds = {0, 1};
 		String sql = "select * from event_type_id_12319 where sub_type_id = ?";
-		List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, 354);
+		List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, 999);
 		Map<String, Object> map = list.get(0);
 		typeIds[0] = (int) map.get("maintypeid");
 		typeIds[1] = (int) map.get("subtypeid");
@@ -155,14 +157,14 @@ public class MyBaitsTest extends BaseJunit4Test {
 				jdbcTemplate.update(insertSql,patrolID,cityPatrolID);
 			}
 			patrolInfo.setPatrolID(cityPatrolID);
-			patrolInfo.setDistrictName("滨海新区");
 			patrolInfo.setUnitName("滨海新区社会治理运行中心");
 			patrolInfo.setPatrolTypeID(2);
 			param.add(patrolInfo);
 		}
 
 
-		httpPost = new HttpPost("http://111.164.113.101:8081/eUrbanMIS/api/vehicle/postPatrol");
+//		httpPost = new HttpPost("http://192.156.193.231:8081/eUrbanMIStj/api/vehicle/postPatrol");
+		httpPost = new HttpPost("http://192.156.193.217:8081/eUrbanMIS/api/vehicle/postPatrol");
 		Map<String,Object> object = new HashMap<String,Object>();
 		object.put("patrolInfoList",param);
 		System.out.println(gson.toJson(object));
@@ -183,11 +185,25 @@ public class MyBaitsTest extends BaseJunit4Test {
 	}
 
 
+	@Test
+	public void testConfig(){
+		String str = PropertiesUtils.getValue("conf/conf.properties","conf.statInfoUrl");
+		System.out.println(str);
+	}
+
+	@Test
+	public void testTkMybaits(){
+	    List<StatInfo> list  = tkStatInfoMapper.selectAll();
+        for (int i = 0; i < list.size(); i++) {
+            StatInfo statInfo = list.get(i);
+            System.out.println(statInfo.getCreateTime());
+        }
+    }
+
+
 }
 
 class DateAdapter implements JsonDeserializer {
-
-
 	@Override
 	public Date deserialize(JsonElement json, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
 		return new Date(json.getAsLong());
